@@ -10,6 +10,8 @@
 #pragma once
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
 #include <string>
 #include <stdio.h>
 #include <vector>
@@ -29,5 +31,6 @@ public:
 	FaceDetector(const std::string path);
 	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);
 	std::vector<cv::Rect> detection(cv::Mat frame);
+	std::vector<cv::Rect> identify(cv::Mat image);
 	int getScale();
 };

@@ -58,7 +58,22 @@ vector<Rect> FaceDetector::detection(Mat frame){
     auto stop = high_resolution_clock::now();
 
     auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Execution time for detecting a face: " << duration.count() << " microseconds." << endl;
+    cout << "\nExecution time for detecting a face: " << duration.count() << " microseconds." << endl;
+
+    return faces;
+}
+
+vector<Rect> FaceDetector::identify(Mat img){
+    vector<Rect> faces;
+
+    if (img.empty()){
+        cout << "The path to the image is incorrect";
+        //exit(0);
+    }
+
+    else {
+        faceCascade.detectMultiScale(img, faces);
+    }
 
     return faces;
 }

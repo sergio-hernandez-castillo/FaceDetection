@@ -14,8 +14,13 @@ using namespace std;
 
 int main(){
     VideoCapture cap;
+    vector<Rect> faces;
+    vector<Rect> target;
 
     FaceDetector Detect("../models/haarcascade_frontalface_alt.xml");
+    string pathImgTest = "../../Feature_Extraction/source/test_images/obama.png";
+
+    Mat imgTest = imread(pathImgTest, IMREAD_UNCHANGED);
 
     int scale;
     scale = Detect.getScale();
@@ -27,11 +32,11 @@ int main(){
     }//Close if 
 
     for (;;){
-        vector<Rect> faces;
         Mat frame;
         cap >> frame;
 
         faces = Detect.detection(frame);
+        target = Detect.identify(imgTest);
 
         for (Rect area : faces){
             Scalar drawColor = Scalar(255, 0, 0);
@@ -39,6 +44,17 @@ int main(){
             rectangle(frame, Point(cvRound(area.x * scale), cvRound(area.y * scale)),
                 Point(cvRound(((double)area.x + (double)area.width - 1) * scale),
                     cvRound(((double)area.y + (double)area.height - 1) * scale)), drawColor);
+
+            if (target.empty()){
+                cout << "\nTarget face was not detected." << endl;
+            }//Close if 
+
+            else {
+                putText(frame, "Face", 
+                Point(cvRound(((double)area.x + (double)area.width - 1) * scale), 
+                cvRound(((double)area.y + (double)area.height - 1) * scale)), 
+                FONT_HERSHEY_SIMPLEX , 1.0, drawColor, 2);
+            }
         }//Close for
 
         imshow("Webcam", frame);

@@ -52,8 +52,10 @@ vector<Rect> FaceDetector::detection(Mat frame){
 
     cvtColor(frame, grayscale, COLOR_BGR2GRAY);
 
-    auto start = high_resolution_clock::now(); 
-    resize(grayscale, grayscale, cv::Size(grayscale.size().width / scale, grayscale.size().height / scale));
+    auto start = high_resolution_clock::now();
+
+    // Necessary if rectangles drawn around the face are needed.
+    //resize(grayscale, grayscale, Size(grayscale.size().width / scale, grayscale.size().height / scale));
     FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size));
     auto stop = high_resolution_clock::now();
 

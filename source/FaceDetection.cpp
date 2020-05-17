@@ -15,6 +15,7 @@ using namespace std::chrono;
 using namespace std;
 using namespace cv;
 
+// Default constructor, initializes variables with "default" values (set by us)
 FaceDetector::FaceDetector(){
     faceCascade.load("../models/haarcascade_frontalface_alt.xml");
     size = 30;
@@ -25,6 +26,7 @@ FaceDetector::FaceDetector(){
     flags = 0;
 }
 
+// Constructor that initializes faceCascade path to a chosen one
 FaceDetector::FaceDetector(const string path){
     faceCascade.load(path);
     size = 30;
@@ -35,7 +37,7 @@ FaceDetector::FaceDetector(const string path){
     flags = 0;
 }
     
-
+// Overload constructor that initializes every other variable to user choice
 FaceDetector::FaceDetector(string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag){
     faceCascade.load(faceCascadeFile);
     this->scale = scale;
@@ -46,26 +48,30 @@ FaceDetector::FaceDetector(string faceCascadeFile, int scale, int size, double s
     flags = flag;
 }
 
+// Converts image into grayscale, detects faces of different sizes and returns a list of different-sized faces as rectangle vectors
 vector<Rect> FaceDetector::detection(Mat frame){
     vector<Rect> faces;
     Mat grayscale;
 
-    cvtColor(frame, grayscale, COLOR_BGR2GRAY);
+    cvtColor(frame, grayscale, COLOR_BGR2GRAY); // Converts "frame" image into grayscale and outputs into "grayscale"
 
-    auto start = high_resolution_clock::now();
+    auto start = high_resolution_clock::now();  // Starts timer for execution time of face detection
 
-    // Necessary if rectangles drawn around the face are needed.
+    // Resizes image, necessary if rectangles drawn around the face are needed.
     //resize(grayscale, grayscale, Size(grayscale.size().width / scale, grayscale.size().height / scale));
+
+    // Detects faces of different sizes and returns a list of rectangles in "faces"
     FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size));
-    auto stop = high_resolution_clock::now();
+    
+    auto stop = high_resolution_clock::now();   // Stops timer for execution time of face detection
+    auto duration = duration_cast<microseconds>(stop - start);  // Calculates duration for execution time of face detection
+    cout << "\nExecution time for detecting a face: " << duration.count() << " microseconds." << endl;  // Prints execution time
 
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "\nExecution time for detecting a face: " << duration.count() << " microseconds." << endl;
-
-    return faces;
+    return faces;   // Returns faces of different sizes as rectangle vectors
 }
 
-vector<Rect> FaceDetector::identify(Mat img){
+// Method suposed to tell apart faces
+vector<Rect> FaceDetector::identify(Mat img, vector<Rect> facesArray){
     vector<Rect> faces;
 
     if (img.empty()){
@@ -74,12 +80,13 @@ vector<Rect> FaceDetector::identify(Mat img){
     }
 
     else {
-        faceCascade.detectMultiScale(img, faces);
+        faceCascade.detectMultiScale(img, faces);   // This line of code is wrong, will not tell apart faces
     }
 
     return faces;
 }
 
+// Getter method for scale variable
 int FaceDetector::getScale(){
     return scale;
 }

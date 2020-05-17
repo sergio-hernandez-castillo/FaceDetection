@@ -30,7 +30,7 @@ public:
 	FaceDetector();	// Default constructor, initializes variables with "default" values (set by us)
 	FaceDetector(const std::string path);	// Constructor that initializes faceCascade path to a chosen one
 	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);	// Overload constructor that initializes every other variable to user choice
-	std::vector<cv::Rect> detection(cv::Mat frame);	// Converts image into grayscale and resizes
-	std::vector<cv::Rect> identify(cv::Mat image);	// Detects faces and draws rectangles around them
+	std::vector<cv::Rect> detection(cv::Mat frame);	// Converts image into grayscale, detects faces of different sizes and returns a list of different-sized faces as rectangle vectors
+	std::vector<cv::Rect> identify(cv::Mat image, std::vector<cv::Rect> facesArray);	// Method suposed to tell apart faces
 	int getScale();	// Getter method for scale variable
 };

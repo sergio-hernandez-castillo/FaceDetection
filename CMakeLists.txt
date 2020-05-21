@@ -2,6 +2,9 @@
 # https://github.com/robtry/face-alignment/blob/master/CMakeLists.txt
 #
 # When doing "cmake" command, do: cmake ../ -DCMAKE_CXX_FLAGS="-std=c++11"
+#
+# If there are any problems running and opening camera with cmake, 
+# do: cd /opt/opencv/build && make uninstall
 
 cmake_minimum_required(VERSION 3.14)
 message("Module 1 'FaceDetection' starting ...")
